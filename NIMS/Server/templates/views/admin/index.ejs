@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <title>Hope UI | Responsive Bootstrap 5 Admin Dashboard Template</title>
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="../assets/images/favicon.ico" />
+
+    <!-- Library / Plugin Css Build -->
+    <link rel="stylesheet" href="../assets/css/core/libs.min.css" />
+
+    <!-- Aos Animation Css -->
+    <link rel="stylesheet" href="../assets/vendor/aos/dist/aos.css" />
+
+    <!-- Hope Ui Design System Css -->
+    <link rel="stylesheet" href="../assets/css/hope-ui.min.css?v=2.0.0" />
+
+    <!-- Custom Css -->
+    <link rel="stylesheet" href="../assets/css/custom.min.css?v=2.0.0" />
+
+    <!-- Dark Css -->
+    <link rel="stylesheet" href="../assets/css/dark.min.css" />
+
+    <!-- Customizer Css -->
+    <link rel="stylesheet" href="../assets/css/customizer.min.css" />
+
+    <!-- RTL Css -->
+    <link rel="stylesheet" href="../assets/css/rtl.min.css" />
+  </head>
+  <body class="  ">
+    <!-- loader Start -->
+    <div id="loading">
+      <div class="loader simple-loader">
+        <div class="loader-body"></div>
+      </div>
+    </div>
+    <!-- loader END -->
+    <%- include('../../partials/aside') %>
+
+    <main class="main-content">
+      <!-- Nav Component -->
+      <%- include('../../partials/nav') %>
+      <div class="conatiner-fluid content-inner mt-0 py-5">
+        <div class="row">
+          <div class="col-lg-3 col-md-6">
+            <div class="card bg-soft-info">
+              <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center">
+                  <div class="bg-soft-info text-black rounded p-3">
+                    <svg
+                      class="icon-20"
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="20px"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
+                      ></path>
+                    </svg>
+                  </div>
+                  <div class="text-end">
+                    <h2 class="counter" style="visibility: visible">
+                      <%= totalUsersCount %>
+                    </h2>
+                    Users
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-3 col-md-6">
+            <div class="card bg-soft-warning">
+              <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center">
+                  <div class="bg-soft-warning rounded p-3">
+                    <svg
+                      class="icon-20"
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="20px"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
+                      ></path>
+                    </svg>
+                  </div>
+                  <div class="text-end">
+                    <h2 class="counter" style="visibility: visible">
+                      <%= totalClientCount %>
+                    </h2>
+                    Clients
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-3 col-md-6">
+            <div class="card bg-soft-danger">
+              <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center">
+                  <div class="bg-soft-danger rounded p-3">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="16"
+                      height="16"
+                      fill="currentColor"
+                      class="bi bi-box2"
+                      viewBox="0 0 16 16"
+                    >
+                      <path
+                        d="M2.95.4a1 1 0 0 1 .8-.4h8.5a1 1 0 0 1 .8.4l2.85 3.8a.5.5 0 0 1 .1.3V15a1 1 0 0 1-1 1H1a1 1 0 0 1-1-1V4.5a.5.5 0 0 1 .1-.3L2.95.4ZM7.5 1H3.75L1.5 4h6V1Zm1 0v3h6l-2.25-3H8.5ZM15 5H1v10h14V5Z"
+                      ></path>
+                    </svg>
+                  </div>
+                  <div class="text-end">
+                    <h2 class="counter" style="visibility: visible">
+                      <%= totalOemCount %>
+                    </h2>
+                    OEMS Lists
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-3 col-md-6">
+            <div class="card bg-soft-primary">
+              <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center">
+                  <div class="bg-soft-primary rounded p-3">
+                    <svg
+                      class="icon-20"
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="20px"
+                      viewBox="0 0 20 20"
+                      fill="currentColor"
+                    >
+                      <path
+                        d="M9 6a3 3 0 11-6 0 3 3 0 016 0zM17 6a3 3 0 11-6 0 3 3 0 016 0zM12.93 17c.046-.327.07-.66.07-1a6.97 6.97 0 00-1.5-4.33A5 5 0 0119 16v1h-6.07zM6 11a5 5 0 015 5v1H1v-1a5 5 0 015-5z"
+                      ></path>
+                    </svg>
+                  </div>
+                  <div class="text-end">
+                    <h2 class="counter" style="visibility: visible">4500</h2>
+                    Pharmacists
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-3 col-md-6">
+            <div class="card">
+              <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center">
+                  <div class="bg-info text-white rounded p-3">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="16"
+                      height="16"
+                      fill="currentColor"
+                      class="bi bi-buildings-fill"
+                      viewBox="0 0 16 16"
+                    >
+                      <path
+                        d="M15 .5a.5.5 0 0 0-.724-.447l-8 4A.5.5 0 0 0 6 4.5v3.14L.342 9.526A.5.5 0 0 0 0 10v5.5a.5.5 0 0 0 .5.5h9a.5.5 0 0 0 .5-.5V14h1v1.5a.5.5 0 0 0 .5.5h3a.5.5 0 0 0 .5-.5V.5ZM2 11h1v1H2v-1Zm2 0h1v1H4v-1Zm-1 2v1H2v-1h1Zm1 0h1v1H4v-1Zm9-10v1h-1V3h1ZM8 5h1v1H8V5Zm1 2v1H8V7h1ZM8 9h1v1H8V9Zm2 0h1v1h-1V9Zm-1 2v1H8v-1h1Zm1 0h1v1h-1v-1Zm3-2v1h-1V9h1Zm-1 2h1v1h-1v-1Zm-2-4h1v1h-1V7Zm3 0v1h-1V7h1Zm-2-2v1h-1V5h1Zm1 0h1v1h-1V5Z"
+                      ></path>
+                    </svg>
+                  </div>
+                  <div class="text-end">
+                    Departments
+                    <h2 class="counter" style="visibility: visible">
+                      <%= totalDeptCount %>
+                    </h2>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-3 col-md-6">
+            <div class="card">
+              <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center">
+                  <div class="bg-warning text-white rounded p-3">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="16"
+                      height="16"
+                      fill="currentColor"
+                      class="bi bi-gear-wide-connected"
+                      viewBox="0 0 16 16"
+                    >
+                      <path
+                        d="M7.068.727c.243-.97 1.62-.97 1.864 0l.071.286a.96.96 0 0 0 1.622.434l.205-.211c.695-.719 1.888-.03 1.613.931l-.08.284a.96.96 0 0 0 1.187 1.187l.283-.081c.96-.275 1.65.918.931 1.613l-.211.205a.96.96 0 0 0 .434 1.622l.286.071c.97.243.97 1.62 0 1.864l-.286.071a.96.96 0 0 0-.434 1.622l.211.205c.719.695.03 1.888-.931 1.613l-.284-.08a.96.96 0 0 0-1.187 1.187l.081.283c.275.96-.918 1.65-1.613.931l-.205-.211a.96.96 0 0 0-1.622.434l-.071.286c-.243.97-1.62.97-1.864 0l-.071-.286a.96.96 0 0 0-1.622-.434l-.205.211c-.695.719-1.888.03-1.613-.931l.08-.284a.96.96 0 0 0-1.186-1.187l-.284.081c-.96.275-1.65-.918-.931-1.613l.211-.205a.96.96 0 0 0-.434-1.622l-.286-.071c-.97-.243-.97-1.62 0-1.864l.286-.071a.96.96 0 0 0 .434-1.622l-.211-.205c-.719-.695-.03-1.888.931-1.613l.284.08a.96.96 0 0 0 1.187-1.186l-.081-.284c-.275-.96.918-1.65 1.613-.931l.205.211a.96.96 0 0 0 1.622-.434l.071-.286zM12.973 8.5H8.25l-2.834 3.779A4.998 4.998 0 0 0 12.973 8.5zm0-1a4.998 4.998 0 0 0-7.557-3.779l2.834 3.78h4.723zM5.048 3.967c-.03.021-.058.043-.087.065l.087-.065zm-.431.355A4.984 4.984 0 0 0 3.002 8c0 1.455.622 2.765 1.615 3.678L7.375 8 4.617 4.322zm.344 7.646.087.065-.087-.065z"
+                      ></path>
+                    </svg>
+                  </div>
+                  <div class="text-end">
+                    Sectors
+                    <h2 class="counter" style="visibility: visible">
+                      <%= totalSectCount %>
+                    </h2>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-3 col-md-6">
+            <div class="card">
+              <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center">
+                  <div class="bg-success text-white rounded p-3">
+                    <svg
+                      class="icon-20"
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="20px"
+                      viewBox="0 0 20 20"
+                      fill="currentColor"
+                    >
+                      <path
+                        fill-rule="evenodd"
+                        d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
+                        clip-rule="evenodd"
+                      ></path>
+                    </svg>
+                  </div>
+                  <div class="text-end">
+                    User
+                    <h2 class="counter" style="visibility: visible">80</h2>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-3 col-md-6">
+            <div class="card">
+              <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center">
+                  <div class="bg-danger text-white rounded p-3">
+                    <svg
+                      class="icon-20"
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="20px"
+                      viewBox="0 0 20 20"
+                      fill="currentColor"
+                    >
+                      <path
+                        fill-rule="evenodd"
+                        d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
+                        clip-rule="evenodd"
+                      ></path>
+                    </svg>
+                  </div>
+                  <div class="text-end">
+                    Category
+                    <h2 class="counter" style="visibility: visible">45</h2>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-3 col-md-6">
+            <div class="card">
+              <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center">
+                  <div class="bg-danger text-white rounded p-3">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="16"
+                      height="16"
+                      fill="currentColor"
+                      class="bi bi-person-vcard-fill"
+                      viewBox="0 0 16 16"
+                    >
+                      <path
+                        d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V4Zm9 1.5a.5.5 0 0 0 .5.5h4a.5.5 0 0 0 0-1h-4a.5.5 0 0 0-.5.5ZM9 8a.5.5 0 0 0 .5.5h4a.5.5 0 0 0 0-1h-4A.5.5 0 0 0 9 8Zm1 2.5a.5.5 0 0 0 .5.5h3a.5.5 0 0 0 0-1h-3a.5.5 0 0 0-.5.5Zm-1 2C9 10.567 7.21 9 5 9c-2.086 0-3.8 1.398-3.984 3.181A1 1 0 0 0 2 13h6.96c.026-.163.04-.33.04-.5ZM7 6a2 2 0 1 0-4 0 2 2 0 0 0 4 0Z"
+                      ></path>
+                    </svg>
+                  </div>
+                  <div class="text-end">
+                    Designations
+                    <h2 class="counter" style="visibility: visible">
+                      <%= totalDesgCount %>
+                    </h2>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-3 col-md-6">
+            <div class="card border-bottom border-4 border-0 border-primary">
+              <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center">
+                  <div>
+                    <span>Worked Today</span>
+                  </div>
+                  <div>
+                    <span>08:00 Hr</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-3 col-md-6">
+            <div class="card border-bottom border-4 border-0 border-info">
+              <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center">
+                  <div>
+                    <span>Worked Week</span>
+                  </div>
+                  <div>
+                    <span>40:00 Hr</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-3 col-md-6">
+            <div class="card border-bottom border-4 border-0 border-danger">
+              <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center">
+                  <div>
+                    <span>Worked Issue</span>
+                  </div>
+                  <div>
+                    <span class="counter" style="visibility: visible"
+                      >1200</span
+                    >
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-3 col-md-6">
+            <div class="card border-bottom border-4 border-0 border-warning">
+              <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center">
+                  <div>
+                    <span>Worked Income</span>
+                  </div>
+                  <div>
+                    <span class="counter" style="visibility: visible"
+                      >$54000</span
+                    >
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Footer Section Start -->
+      <%- include('../../partials/footer') %>
+      <!-- Footer Section End -->
+    </main>
+    <%- include('../../partials/offcanvas') %>
+
+    <!-- Library Bundle Script -->
+    <script src="../assets/js/core/libs.min.js"></script>
+
+    <!-- External Library Bundle Script -->
+    <script src="../assets/js/core/external.min.js"></script>
+
+    <!-- Widgetchart Script -->
+    <script src="../assets/js/charts/widgetcharts.js"></script>
+
+    <!-- mapchart Script -->
+    <script src="../assets/js/charts/vectore-chart.js"></script>
+    <script src="../assets/js/charts/dashboard.js"></script>
+
+    <!-- fslightbox Script -->
+    <script src="../assets/js/plugins/fslightbox.js"></script>
+
+    <!-- Settings Script -->
+    <script src="../assets/js/plugins/setting.js"></script>
+
+    <!-- Slider-tab Script -->
+    <script src="../assets/js/plugins/slider-tabs.js"></script>
+
+    <!-- Form Wizard Script -->
+    <script src="../assets/js/plugins/form-wizard.js"></script>
+
+    <!-- AOS Animation Plugin-->
+    <script src="../assets/vendor/aos/dist/aos.js"></script>
+
+    <!-- App Script -->
+    <script src="../assets/js/hope-ui.js" defer></script>
+  </body>
+</html>
