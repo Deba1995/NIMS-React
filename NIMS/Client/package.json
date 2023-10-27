@@ -1,6 +1,6 @@
 {
-  "name": "hope-ui-react",
-  "version": "4.0.1",
+  "name": "nims-react",
+  "version": "1.0.1",
   "private": true,
   "scripts": {
     "start": "react-scripts start",
@@ -16,6 +16,7 @@
     "@fullcalendar/list": "^5.9.0",
     "@fullcalendar/react": "^5.11.0",
     "@reduxjs/toolkit": "^1.8.1",
+    "@types/js-cookie": "^3.0.5",
     "aos": "^2.3.4",
     "apexcharts": "^3.33.0",
     "bootstrap": "^5.2.3",
@@ -25,6 +26,7 @@
     "fullcalendar-interaction": "^5.3.3",
     "immutability-helper": "^3.1.1",
     "jquery": "^3.6.0",
+    "js-cookie": "^3.0.5",
     "leaflet": "^1.7.1",
     "lodash": "^4.17.21",
     "material-react-table": "^1.15.1",

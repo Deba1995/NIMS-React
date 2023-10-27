@@ -89,7 +89,7 @@ const homeView = async (req, res, next) => {
 
 const logout = (req, res, next) => {
   res.cookie("jwt", "", { maxAge: 1 });
-  res.redirect("/login");
+  res.status(200).json({ success: true, message: "Logging out" });
 };
 
 const registerView = (req, res, next) => {
@@ -105,19 +105,18 @@ const registerView = (req, res, next) => {
 const adminDashboardView = async (req, res, next) => {
   const totalUsersCount = await user.countDocuments();
   const totalClientCount = await client.countDocuments();
-  const totalDeptCount = await userdepartment.countDocuments();
-  const totalDesgCount = await userdesignation.countDocuments();
-  const totalSectCount = await clientsector.countDocuments();
+  const totalAdminCount = await admin.countDocuments();
+  const totalOrderCount = await oemOrder.countDocuments();
+  const totalProductCount = await oemProduct.countDocuments();
   const totalOemCount = await oem.countDocuments();
 
   res.status(201).json({
-    totalUsersCount,
-    totalClientCount,
-    totalDeptCount,
-    totalDeptCount,
-    totalDesgCount,
-    totalSectCount,
-    totalOemCount,
+    totalUsersCount: totalUsersCount,
+    totalClientCount: totalClientCount,
+    totalAdminCount: totalAdminCount,
+    totalOrderCount: totalOrderCount,
+    totalProductCount: totalProductCount,
+    totalOemCount: totalOemCount,
     success: true,
     message: "Data retrieved successfully",
   });
@@ -160,23 +159,34 @@ const creatingAdmin = async (req, res, next) => {
 const login = async (req, res, next) => {
   try {
     const { email, password } = req.body;
-    console.log(email);
     const userLogin = await user.login(email, password, admin);
-    console.log(userLogin.role);
+    console.log(userLogin.firstName);
     if (userLogin.role === "admin") {
-      const token = createToken({ uid: userLogin._id, role: userLogin.role });
+      const token = createToken({
+        uid: userLogin._id,
+        name: userLogin.firstName,
+        role: userLogin.role,
+      });
       res.cookie("jwt", token, {
         withCredentials: true,
-        httpOnly: true,
+        httpOnly: false,
         maxAge: maxAge * 1000,
       });
       console.log("Logged in as Admin");
-      res
-        .status(200)
-        .json({ user: userLogin.email, token: token, success: true });
+      res.status(200).json({
+        user: userLogin.email,
+        name: userLogin.firstName,
+        role: userLogin.role,
+        token: token,
+        success: true,
+      });
     } else {
-      const token = createToken({ uid: userLogin._id, role: userLogin.role });
-      res.cookie("jwt", token, { httpOnly: true, maxAge: maxAge * 1000 });
+      const token = createToken({
+        uid: userLogin._id,
+        name: userLogin.firstName,
+        role: userLogin.role,
+      });
+      res.cookie("jwt", token, { httpOnly: false, maxAge: maxAge * 1000 });
       console.log("Logged in as user");
       res.status(200).json({
         user: userLogin.email,
@@ -187,8 +197,8 @@ const login = async (req, res, next) => {
     }
   } catch (err) {
     console.log(err);
-    // const errors = handleErrors(err);
-    res.status(400).json({ err });
+    const errors = handleErrors(err);
+    res.status(400).json({ errors });
   }
 };
 
@@ -385,11 +395,12 @@ const oemProductAdd = async (req, res, next) => {
       const newOemProduct = new oemProduct(req.body);
       const oemRegisteredProduct = await newOemProduct.save();
       if (oemRegisteredProduct) {
+        let newCat, newSubCat;
         const ifExistCategory = await oemCategory.findOne({ categoryName });
 
         if (!ifExistCategory) {
           const newCategory = new oemCategory({ categoryName: categoryName });
-          await newCategory.save();
+          newCat = await newCategory.save();
         }
         const ifExistSubCategory = await oemSubCategory.findOne({
           subcategoryName,
@@ -398,10 +409,12 @@ const oemProductAdd = async (req, res, next) => {
           const newSubCategory = new oemSubCategory({
             subcategoryName: subcategoryName,
           });
-          await newSubCategory.save();
+          newSubCat = await newSubCategory.save();
         }
         res.status(201).json({
           oemProduct: oemRegisteredProduct,
+          oemCategory: newCat,
+          oemSubCategory: newSubCat,
           success: true,
           message: "Oem product created successfully",
         });
@@ -457,15 +470,19 @@ const oemProductDelete = async (req, res, next) => {
 
 const oemOrderList = async (req, res, next) => {
   try {
+    const orders = await oemOrder.find({});
     const clients = await client.find({});
     const sectors = await clientsector.find({});
     const oems = await oem.find({});
     const products = await oemProduct.find({});
+    const category = await oemCategory.find({});
     res.status(201).json({
+      orders: orders,
       clients: clients,
       sectors: sectors,
       oems: oems,
       products: products,
+      category: category,
       message: "Data retrieved successfully ",
       success: true,
     });
@@ -474,6 +491,85 @@ const oemOrderList = async (req, res, next) => {
       message: "Error retrieving data ",
       success: false,
     });
+  }
+};
+
+const createOemOrder = async (req, res, next) => {
+  try {
+    const {
+      sectorName,
+      clientName,
+      departmentName,
+      orderId,
+      orderDate,
+      challanNo,
+      challanDate,
+      details,
+    } = req.body;
+    // console.log(req.body)
+    const newOemOrder = new oemOrder({
+      sectorName,
+      clientName,
+      departmentName,
+      orderId,
+      orderDate,
+      challanNo,
+      challanDate,
+      details,
+    });
+    // console.log(newOemOrder)
+    const oemOrderRegistered = await newOemOrder.save();
+    if (oemOrderRegistered) {
+      res.status(201).json({
+        oemOrders: oemOrderRegistered,
+        success: true,
+        message: "Oem order created successfully",
+      });
+    }
+  } catch (err) {
+    console.log(err);
+    const errors = handleErrorsOem(err);
+    console.log(errors);
+
+    res.status(400).json({ errors });
+  }
+};
+const oemOrderUpdate = async (req, res, next) => {
+  const id = req.params.id;
+  oemOrder
+    .findOneAndUpdate({ _id: id }, req.body, { runValidators: true })
+    .then((result) => {
+      res.status(201).json({
+        oemOrders: id,
+        success: true,
+        message: "Order updated successfully",
+      });
+    })
+    .catch((err) => {
+      console.log(err);
+      const errors = handleErrorsOem(err);
+      res.status(400).json({ errors });
+    });
+};
+const oemOrderDelete = async (req, res, next) => {
+  try {
+    const id = req.params.id;
+
+    oemOrder
+      .findByIdAndDelete(id)
+      .then((result) => {
+        res.json({
+          success: true,
+          message: "Order deleted successfully",
+        });
+      })
+      .catch((err) => {
+        res
+          .status(400)
+          .json({ success: false, message: "Error deleting the order" });
+      });
+  } catch (err) {
+    res.status(400).json({ success: false, message: "Error " });
   }
 };
 //===============================================================================================================
@@ -902,4 +998,7 @@ module.exports = {
   oemProductDelete,
   oemProductUpdate,
   oemOrderList,
+  createOemOrder,
+  oemOrderUpdate,
+  oemOrderDelete,
 };

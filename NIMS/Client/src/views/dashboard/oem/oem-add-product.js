@@ -324,7 +324,6 @@ const OemProduct = () => {
       const data = await response.json();
 
       if (data.success) {
-        console.log("Oem added successfully");
         handleSuccess(data.message);
         setOemProductList([...oemProductList, data.oemProduct]);
         setOemCategory("");
@@ -703,9 +702,15 @@ const OemProduct = () => {
                               id="cname"
                               disabled={true}
                               value={
-                                oemList.find(
-                                  (oem) => oem.oemCode === selectedOemCode
-                                )?.oemName
+                                selectedOemCode &&
+                                `${
+                                  oemList.find(
+                                    (oem) => oem.oemCode === selectedOemCode
+                                  )?.oemName || ""
+                                }`
+                              }
+                              onChange={(e) =>
+                                setSelectedOemCode(e.target.value)
                               }
                               placeholder="Oem Name"
                             />
@@ -725,6 +730,9 @@ const OemProduct = () => {
                               disabled={true}
                               value={selectedOemCategory}
                               placeholder="Oem Name"
+                              onChange={(e) =>
+                                setSelectedOemCategory(e.target.value)
+                              }
                             />
                           </Form.Group>
                           <Form.Group className="col-md-3  form-group">
@@ -742,6 +750,9 @@ const OemProduct = () => {
                               disabled={true}
                               value={selectedOemSubCategory}
                               placeholder="Oem Name"
+                              onChange={(e) =>
+                                setSelectedOemSubCategory(e.target.value)
+                              }
                             />
                           </Form.Group>
                           <Form.Group className="col-md-3 form-group">

@@ -97,6 +97,17 @@ const handleErrors = (err) => {
       errors[value.properties.path] = value.properties.message;
     });
   }
+
+  //Incorrect email
+  if (err.message === "incorrect email") {
+    errors.email = "Check the email you provided";
+  }
+
+  //Incorrect password
+  if (err.message === "incorrect password") {
+    errors.password =
+      "Wrong password. Try again or click Forgot password to reset it.";
+  }
   return errors;
 };
 

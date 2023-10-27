@@ -12,20 +12,27 @@ import { store } from "./store";
 
 import Index from "./views/index";
 import { IndexRouters } from "./router";
-import {LandingModulesRouter} from './router/landing-modules-router'
+import { LandingModulesRouter } from "./router/landing-modules-router";
 import { SimpleRouter } from "./router/simple-router";
 import { DefaultRouter } from "./router/default-router";
-
-const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <Index />,
-  },
-  ...DefaultRouter,
-  ...IndexRouters,
-  ...SimpleRouter,
-  ...LandingModulesRouter
-] ,{basename: process.env.PUBLIC_URL });
+import Error404 from "./views/dashboard/errors/error404";
+const router = createBrowserRouter(
+  [
+    {
+      path: "/",
+      element: <Index />,
+    },
+    ...DefaultRouter,
+    ...IndexRouters,
+    ...SimpleRouter,
+    ...LandingModulesRouter,
+    {
+      path: "*",
+      element: <Error404 />,
+    },
+  ],
+  { basename: process.env.PUBLIC_URL }
+);
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>

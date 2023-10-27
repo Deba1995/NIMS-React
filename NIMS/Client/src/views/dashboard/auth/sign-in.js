@@ -4,7 +4,8 @@ import { Row, Col, Image, Form, Button, ListGroup } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import Card from "../../../components/Card";
 import { BASE_URL } from "../../../config/serverApiConfig";
-import { ToastContainer, toast } from "react-toastify";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 // img
 import facebook from "../../../assets/images/brands/fb.svg";
@@ -20,13 +21,12 @@ const SignIn = () => {
 
   const handleError = (err) =>
     toast.error(err, {
-      position: "bottom-left",
+      position: toast.POSITION.TOP_RIGHT,
     });
   const handleSuccess = (msg) =>
     toast.success(msg, {
-      position: "bottom-left",
+      position: toast.POSITION.TOP_RIGHT,
     });
-
   async function handleSubmit(e) {
     e.preventDefault();
 
@@ -44,7 +44,6 @@ const SignIn = () => {
       });
 
       const data = await response.json();
-      console.log(data);
       if (data.success) {
         // Handle success, e.g., show a success message or update UI
         handleSuccess(data.message);
@@ -53,8 +52,13 @@ const SignIn = () => {
         }, 1000);
       } else {
         // Handle error, e.g., show an error message or perform necessary actions
+        Object.keys(data.errors).forEach((key) => {
+          const messageErr = data.errors[key];
+          if (messageErr) {
+            handleError(messageErr);
+          }
+        });
         console.error("Failed to add user");
-        handleError(data.message);
       }
     } catch (error) {
       console.error("Error:", error);
@@ -65,6 +69,7 @@ const SignIn = () => {
     <>
       <section className="login-content">
         <Row className="m-0 align-items-center bg-white vh-100">
+          <ToastContainer position="top-right" autoClose={3000} />
           <Col md="6">
             <Row className="justify-content-center">
               <Col md="10">

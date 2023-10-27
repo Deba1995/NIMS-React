@@ -41,14 +41,16 @@ const {
   oemProductDelete,
   oemProductUpdate,
   oemOrderList,
+  createOemOrder,
+  oemOrderUpdate,
+  oemOrderDelete,
 } = require("../controllers/auth-controller");
 const router = express.Router();
 
 router.get("*", checkUser);
 router.get("/", requireAuth, homeView);
 
-// router.get("/login", requireLoginSignInAuth, loginView);
-router.get("/logout", logout);
+router.get("/api/auth/logout", logout);
 
 router.post("/auth/sign-in", login);
 // router.get("/signup", requireLoginSignInAuth, registerView);
@@ -91,6 +93,9 @@ router.delete("/api/oem/oem-delete-product/:id", requireAuth, oemProductDelete);
 router.put("/api/oem/oem-update-product/:id", requireAuth, oemProductUpdate);
 
 router.get("/api/oem/oem-get-order", requireAuth, oemOrderList);
+router.post("/api/oem/oem-add-order", requireAuth, createOemOrder);
+router.put("/api/oem/oem-update-order/:id", requireAuth, oemOrderUpdate);
+router.delete("/api/oem/oem-delete-order/:id", requireAuth, oemOrderDelete);
 /*---------------------------------------------------------------------
              End Oem Module Routes
 -----------------------------------------------------------------------*/
