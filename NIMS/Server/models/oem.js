@@ -176,10 +176,7 @@ const oemOrderSchema = new mongoose.Schema(
           type: String,
           required: [true, "Table data cannot be empty for subcategory"],
         },
-        additionalInfo: {
-          type: String,
-          required: [true, "Table data cannot be empty for specification"],
-        },
+
         oemStartDate: {
           type: String,
           required: [true, "Table data cannot be empty for oem Start Date"],

@@ -351,30 +351,6 @@ const AddOrder = () => {
       }));
     setDepartmentOptionList(transformedData2);
   };
-
-  // const handleOemChange = (value) => {
-  //   const selectedOemCode = value.value;
-  //   const selectedOem = oemList.find(
-  //     (item) => item.oemCode === selectedOemCode
-  //   );
-
-  //   if (selectedOem) {
-  //     const selectedOemName = selectedOem.oemName;
-  //     setOemcodeDropdown(selectedOemName);
-  //   }
-
-  //   const uniqueCategories = new Set(
-  //     productList
-  //       .filter((item) => item.oemCode === value.value)
-  //       .map((item) => item.categoryName)
-  //   );
-  //   const transformedData1 = [...uniqueCategories].map((category) => ({
-  //     value: category,
-  //     label: category,
-  //   }));
-  //   setCategoryOptionList(transformedData1);
-  // };
-
   const handleChangeCategory = (value) => {
     setCategoryDropdown(value.value);
 
@@ -519,9 +495,6 @@ const AddOrder = () => {
   async function handleSubmitUpdate(e) {
     e.preventDefault();
     try {
-      // const NewSelectedSector = sectorList.find(
-      //   (sector) => sector.sectorCode === selectedSectorDropdown
-      // );
       const response = await fetch(
         `${API_BASE_URL}oem/oem-update-order/${selectedId}`,
         {

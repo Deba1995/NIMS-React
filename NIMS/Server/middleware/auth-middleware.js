@@ -36,35 +36,6 @@ const requireAuth = (req, res, next) => {
   }
 };
 
-const requireLoginSignInAuth = (req, res, next) => {
-  const token = req.cookies.jwt;
-
-  //check json web token exists & is verified
-  if (token) {
-    jwt.verify(token, "my secret key", (err, decodedToken) => {
-      if (err) {
-        // Token is invalid or expired
-        res.clearCookie("jwt"); // Clear the invalid token
-        req.user = null; // Clear user information from the request
-        next();
-      } else {
-        if (decodedToken.role !== "admin") {
-          return res.status(401).json({ message: "Not authorized" });
-        } else {
-          console.log(decodedToken);
-          // Token is valid, add user information to the request
-          req.user = decodedToken;
-          next();
-        }
-      }
-    });
-  } else {
-    // No token found, user is not authenticated
-    req.user = null; // Clear user information from the request
-    next();
-  }
-};
-
 //check current user
 const checkUser = (req, res, next) => {
   const token = req.cookies.jwt;
@@ -89,5 +60,4 @@ const checkUser = (req, res, next) => {
 module.exports = {
   requireAuth,
   checkUser,
-  requireLoginSignInAuth,
 };

@@ -7,12 +7,11 @@ const {
   createSector,
   editSector,
   deleteSector,
- 
+
   createClient,
   editSingleClient,
   deleteClient,
   clientList,
-  singleClient,
 } = require("../../controllers/auth-controller");
 
 /*---------------------------------------------------------------------
@@ -23,16 +22,26 @@ const {
 router.get("/api/client/client-get-sector", requireAuth, sectorView);
 router.post("/api/client/client-add-sector", requireAuth, createSector);
 router.put("/api/client/client-update-sector/:id", requireAuth, editSector);
-router.delete("/api/client/client-delete-sector/:id", requireAuth, deleteSector);
+router.delete(
+  "/api/client/client-delete-sector/:id",
+  requireAuth,
+  deleteSector
+);
 
 //Client Action
 
-
 router.post("/api/client/client-add-client", requireAuth, createClient);
 router.get("/api/client/client-get-client", requireAuth, clientList);
-//router.get("/api/client/client-profile/:id", requireAuth, singleClient);
-router.put("/api/client/client-update-client/:id", requireAuth, editSingleClient);
-router.delete("/api/client/client-delete-client/:id", requireAuth, deleteClient);
+router.put(
+  "/api/client/client-update-client/:id",
+  requireAuth,
+  editSingleClient
+);
+router.delete(
+  "/api/client/client-delete-client/:id",
+  requireAuth,
+  deleteClient
+);
 
 /*---------------------------------------------------------------------
              End Client Module Routes

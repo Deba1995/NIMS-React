@@ -4,7 +4,6 @@ const router = express.Router();
 const { requireAuth } = require("../../middleware/auth-middleware");
 const { upload } = require("../../middleware/upload-middleware");
 const {
-  addUserView,
   departmentView,
   createDepartment,
   editDepartment,
@@ -15,7 +14,6 @@ const {
   deleteDesignation,
   creatingUser,
   userList,
-  singleUser,
   editSingleUser,
   deleteUser,
 } = require("../../controllers/auth-controller");
@@ -24,7 +22,7 @@ const {
              Start User Module Routes
 -----------------------------------------------------------------------*/
 //User Action
-// router.get("/user/add-user", requireAuth, addUserView);
+router.get("/api/user/user-get-user", requireAuth, userList);
 router.post(
   "/api/user/user-add-user",
   requireAuth,
@@ -44,9 +42,7 @@ router.put(
   ]),
   editSingleUser
 );
-
-
-
+router.delete("/api/user/user-delete-user/:id", requireAuth, deleteUser);
 
 // Department Action
 router.get("/api/user/user-get-department", requireAuth, departmentView);
@@ -57,14 +53,16 @@ router.delete("/api/user/add-department/:id", requireAuth, deleteDepartment);
 //Designation Action
 router.get("/api/user/user-get-designation", requireAuth, designationView);
 router.post("/api/user/user-add-designation", requireAuth, createDesignation);
-router.put("/api/user/user-update-designation/:id", requireAuth, editDesignation);
-router.delete("/api/user/user-delete-designation/:id", requireAuth, deleteDesignation);
-
-//User action
- router.get("/api/user/user-get-user", requireAuth, userList);
- 
-// router.get("/user/user-profile/:id", requireAuth, singleUser);
-router.delete("/api/user/user-delete-user/:id", requireAuth, deleteUser);
+router.put(
+  "/api/user/user-update-designation/:id",
+  requireAuth,
+  editDesignation
+);
+router.delete(
+  "/api/user/user-delete-designation/:id",
+  requireAuth,
+  deleteDesignation
+);
 
 /*---------------------------------------------------------------------
              End User Module Routes

@@ -6,16 +6,6 @@ const fs = require("fs");
 
 const path = require("path");
 
-const addUserView = async (req, res, next) => {
-  const users = await user.find({});
-  const designations = await userdesignation.find({});
-  const departments = await userdepartment.find({});
-  res.render("admin/add-user", {
-    users: users,
-    designations: designations,
-    departments: departments,
-  });
-};
 const userList = async (req, res, next) => {
   const users = await user.find({});
   const designations = await userdesignation.find({});
@@ -87,13 +77,11 @@ const creatingUser = async (req, res, next) => {
     const userRegister = await newUser.save();
     if (userRegister) {
       console.log("Sign up successful");
-      res
-        .status(201)
-        .json({
-          user: userRegister,
-          success: true,
-          message: "User created successfully",
-        });
+      res.status(201).json({
+        user: userRegister,
+        success: true,
+        message: "User created successfully",
+      });
     }
   } catch (err) {
     console.log(err);
@@ -141,18 +129,22 @@ const editSingleUser = async (req, res, next) => {
       }
     }
 
-    const updateUser = await user.findOneAndUpdate({employeeId: id}, updatedData, {
-      runValidators: true,
-    });
+    const updateUser = await user.findOneAndUpdate(
+      { employeeId: id },
+      updatedData,
+      {
+        runValidators: true,
+      }
+    );
 
     const updatedUserData = await updateUser.save();
-    console.log(updatedUserData)
+    console.log(updatedUserData);
     if (updatedUserData) {
       console.log("Updated successfully");
       res.status(201).json({
-         user: updatedUserData,
-         success: true,
-         message: "User updated successfully"
+        user: updatedUserData,
+        success: true,
+        message: "User updated successfully",
       });
     }
   } catch (err) {
@@ -168,30 +160,6 @@ const editSingleUser = async (req, res, next) => {
   }
 };
 
-const singleUser = async (req, res, next) => {
-  try {
-    const userId = req.params.id;
-
-    const singleUser = await user.find({ _id: userId });
-    const designations = await userdesignation.find({});
-    const departments = await userdepartment.find({});
-
-    if (!singleUser) {
-      // Handle the case when the user with the provided ID is not found
-      const err = { message: "Not found" };
-      res.status(404).json({ err });
-    }
-
-    res.render(`admin/user-profile`, {
-      singleUser: singleUser[0],
-      designations: designations,
-      departments: departments,
-    });
-  } catch (err) {
-    res.status(400).json({ err });
-  }
-};
-
 const deleteUser = async (req, res, next) => {
   try {
     const id = req.params.id;
@@ -202,7 +170,7 @@ const deleteUser = async (req, res, next) => {
     if (deletedUser) {
       unlinkImageFile(doc?.profilePic);
       unlinkImageFile(doc?.govId);
-      res.json({ 
+      res.json({
         success: true,
         message: "User deleted successfully",
       });
@@ -291,10 +259,8 @@ const checkFileSize = (file) => {
 };
 
 module.exports = {
-  addUserView,
   userList,
   creatingUser,
   editSingleUser,
-  singleUser,
   deleteUser,
 };
