@@ -1,15 +1,10 @@
 import React, { useState } from "react";
-import { Row, Col, Image, Form, Button, ListGroup } from "react-bootstrap";
+import { Row, Col, Image, Form, Button } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import Card from "../../../components/Card";
 import { toast } from "react-toastify";
 import { BASE_URL } from "../../../config/serverApiConfig";
 
-// img
-import facebook from "../../../assets/images/brands/fb.svg";
-import google from "../../../assets/images/brands/gm.svg";
-import instagram from "../../../assets/images/brands/im.svg";
-import linkedin from "../../../assets/images/brands/li.svg";
 import auth5 from "../../../assets/images/auth/05.png";
 
 const SignUp = () => {
@@ -131,7 +126,7 @@ const SignUp = () => {
                           fill="currentColor"
                         />
                       </svg>
-                      <h4 className="logo-title ms-3">Hope UI</h4>
+                      <h4 className="logo-title ms-3">NIMS</h4>
                     </Link>
                     <h2 className="mb-2 text-center">Sign Up</h2>
                     <p className="text-center">Create your Hope UI account.</p>
@@ -242,48 +237,6 @@ const SignUp = () => {
                         >
                           Sign Up
                         </Button>
-                      </div>
-                      <p className="text-center my-3">
-                        or sign in with other accounts?
-                      </p>
-                      <div className="d-flex justify-content-center">
-                        <ListGroup
-                          as="ul"
-                          className="list-group-horizontal list-group-flush"
-                        >
-                          <ListGroup.Item
-                            as="li"
-                            className="list-group-item border-0 pb-0"
-                          >
-                            <Link to="#">
-                              <Image src={facebook} alt="fb" />
-                            </Link>
-                          </ListGroup.Item>
-                          <ListGroup.Item
-                            as="li"
-                            className="list-group-item border-0 pb-0"
-                          >
-                            <Link to="#">
-                              <Image src={google} alt="gm" />
-                            </Link>
-                          </ListGroup.Item>
-                          <ListGroup.Item
-                            as="li"
-                            className="list-group-item border-0 pb-0"
-                          >
-                            <Link to="#">
-                              <Image src={instagram} alt="im" />
-                            </Link>
-                          </ListGroup.Item>
-                          <ListGroup.Item
-                            as="li"
-                            className="list-group-item border-0 pb-0"
-                          >
-                            <Link to="#">
-                              <Image src={linkedin} alt="li" />
-                            </Link>
-                          </ListGroup.Item>
-                        </ListGroup>
                       </div>
                       <p className="mt-3 text-center">
                         Already have an Account{" "}

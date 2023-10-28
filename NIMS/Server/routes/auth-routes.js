@@ -18,6 +18,7 @@ const {
   oemOrderDelete,
   adminProfile,
   editAdminProfile,
+  recoverPass,
 } = require("../controllers/auth-controller");
 const router = express.Router();
 
@@ -33,6 +34,7 @@ router.get("/roles", requireAuth, createRoles);
 
 router.get("/api/admin/admin-get-profile", requireAuth, adminProfile);
 router.put("/api/admin/admin-update-profile", requireAuth, editAdminProfile);
+router.put("/auth/recoverpw", recoverPass);
 /*---------------------------------------------------------------------
              Start Oem Module Routes
 -----------------------------------------------------------------------*/

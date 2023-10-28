@@ -241,6 +241,44 @@ const editAdminProfile = async (req, res) => {
     res.status(400).json({ errors });
   }
 };
+
+//Recover Password
+const recoverPass = async (req, res) => {
+  try {
+    const { email, password, confirmpassword } = req.body;
+    const newAdmin = await admin.findOne({ email }); // 1. Find the Admin by Email
+    // 2. Check if Admin Exists
+    if (!newAdmin) {
+      return res.status(404).json({ message: "Email not found" });
+    }
+    if (password !== confirmpassword) {
+      return res.status(404).json({ message: "Passwords do not match" });
+    }
+    // 3. Update the Password
+    if (password === confirmpassword) {
+      // Assuming "password" is the field in the admin model where you store the hashed password.
+      newAdmin.password = password;
+      await newAdmin.save();
+      // Add this line to save the updated admin information
+      await admin.findOneAndUpdate(
+        { email },
+        { new: true, runValidators: true }
+      );
+
+      return res
+        .status(200)
+        .json({ success: true, message: "Password updated successfully" });
+    } else {
+      const error = new Error("Password mismatch. Check the password.");
+      error.code = "PASSWORD_MISMATCH_ERROR";
+      error.message = "Password does not match.";
+      throw error;
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Password recovery failed" });
+  }
+};
 //===============================================================================================================
 //================================   OEM ACTIONS  ================================================================
 //===============================================================================================================
@@ -428,6 +466,7 @@ module.exports = {
   creatingAdmin,
   login,
   logout,
+  recoverPass,
   adminDashboardView,
   createRoles,
   departmentView,
