@@ -76,7 +76,6 @@ const deleteOem = async (req, res, next) => {
     console.log(err);
   }
 };
-
 const oemProductList = async (req, res, next) => {
   try {
     const oems = await oem.find({});

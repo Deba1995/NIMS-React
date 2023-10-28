@@ -47,8 +47,12 @@ router.delete("/api/user/user-delete-user/:id", requireAuth, deleteUser);
 // Department Action
 router.get("/api/user/user-get-department", requireAuth, departmentView);
 router.post("/api/user/user-add-department", requireAuth, createDepartment);
-router.put("/api/user/add-department/:id", requireAuth, editDepartment);
-router.delete("/api/user/add-department/:id", requireAuth, deleteDepartment);
+router.put("/api/user/user-update-department/:id", requireAuth, editDepartment);
+router.delete(
+  "/api/user/user-delete-department/:id",
+  requireAuth,
+  deleteDepartment
+);
 
 //Designation Action
 router.get("/api/user/user-get-designation", requireAuth, designationView);

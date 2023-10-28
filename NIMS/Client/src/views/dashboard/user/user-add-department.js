@@ -1,84 +1,92 @@
 import React, { useEffect, useState } from "react";
 import { Row, Col, Modal, Form, Button } from "react-bootstrap";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import Card from "../../../components/Card";
 import { API_BASE_URL } from "../../../config/serverApiConfig";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 const UserDepartment = () => {
   const [show, setShow] = useState(false);
-  const [authenticated, setAuthenticated] = useState(false);
-
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
-
-  let history = useNavigate();
-
-  useEffect(() => {
-    console.log("hello");
-    const verifyUser = async () => {
-      const response = await fetch(`${API_BASE_URL}user/user-get-department`, {
-        method: "GET",
-        credentials: "include", // Include cookies in the request
-      });
-      const data = await response.json();
-
-      if (data.success) {
-        setAuthenticated(data.success);
-      } else {
-        history("/auth/sign-in");
-        setAuthenticated(data.success);
-      }
-    };
-    verifyUser();
-  }, [history]);
-
-  //
-  //permission
-  const [permission, setPermission] = useState([
-    {
-      name: "Role",
-      status: false,
-    },
-    {
-      name: "Role Add",
-      status: true,
-    },
-    {
-      name: "Role List",
-    },
-    {
-      name: "Permission",
-    },
-    {
-      name: "Permission Add",
-    },
-    {
-      name: "Permission List",
-    },
-  ]);
+  const [showEdit, setShowEdit] = useState(false);
   const [departments, setDepartments] = useState([]);
   const [departmentName, setDepartmentName] = useState("");
-  function permissionpush() {
-    setPermission([...permission, { departmentName: departmentName }]);
-    permission.push({
-      departmentName: departmentName,
-    });
-  }
+  const [selectedDepartment, setSelectedDepartment] = useState({
+    departmentName: "",
+  });
+  const handleClose = () => setShow(false);
+  const handleShow = () => {
+    setShow(true);
+  };
 
-  function permissiondeleted(index) {
-    permission.splice(index, 1);
-  }
+  const handleCloseEdit = () => setShowEdit(false);
+
+  const handleError = (err) =>
+    toast.error(err, {
+      position: toast.POSITION.TOP_RIGHT,
+    });
+  const handleSuccess = (msg) =>
+    toast.success(msg, {
+      position: toast.POSITION.TOP_RIGHT,
+    });
+
+  // useEffect(() => {
+  //   const checkAuth = async () => {
+  //     try {
+  //       const response = await fetch(`${API_BASE_URL}auth/check`, {
+  //         method: "GET",
+  //         credentials: "include",
+  //       });
+  //       const data = await response.json();
+
+  //       if (!data.user.uid) {
+  //         navigate("/auth/sign-in");
+  //       }
+  //     } catch (error) {
+  //       // Handle authentication error, e.g., redirect to login page.
+  //       handleError(
+  //         "Server is unavailable at this moment. Please try again later."
+  //       );
+  //     }
+  //   };
+
+  //   checkAuth();
+  // }, [navigate]);
+
+  useEffect(() => {
+    const department = async () => {
+      try {
+        const response = await fetch(
+          `${API_BASE_URL}user/user-get-department`,
+          {
+            method: "GET",
+            credentials: "include", // Include cookies in the request
+          }
+        );
+        const data = await response.json();
+
+        if (data.success) {
+          handleSuccess(data.message);
+        } else {
+          handleError(data.success);
+        }
+      } catch {
+        handleError(
+          "Server is unavailable at this moment. Please try again later."
+        );
+      }
+    };
+    department();
+  }, []);
+
+  //
 
   async function handleSubmit(e) {
     e.preventDefault();
 
     try {
       // Get the current modal form element
-      //   const form = e.target;
-
-      //   // Create FormData using the form element
-      //   const formData = new FormData(form);
-
-      const response = await fetch(`${API_BASE_URL}user/user-get-department`, {
+      const response = await fetch(`${API_BASE_URL}user/user-add-department`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -88,38 +96,138 @@ const UserDepartment = () => {
       });
 
       const data = await response.json();
-      console.log(data);
-      if (data.department) {
+      if (data.success) {
         // Handle success, e.g., show a success message or update UI
         console.log("Department added successfully");
         setDepartments([...departments, data.department]);
-        // setDepartmentName("");
         handleClose();
+        handleSuccess("Department added successfully");
       } else {
         // Handle error, e.g., show an error message or perform necessary actions
+        // Display an error toast
+        handleError(data.errors.departmentName);
         console.error("Failed to add department");
+      }
+    } catch (error) {
+      handleError(
+        "Server is unavailable at this moment. Please try again later."
+      );
+    }
+  }
+
+  // Function to handle opening the edit modal and passing the selected department
+  const handleEditClick = (department) => {
+    setShowEdit(true);
+    setSelectedDepartment(department);
+  };
+
+  async function handleSubmitUpdate(e) {
+    e.preventDefault();
+
+    try {
+      // Get the current modal form element
+      const response = await fetch(
+        `${API_BASE_URL}user/user-update-department/${selectedDepartment._id}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+          body: JSON.stringify({
+            departmentName: selectedDepartment.departmentName,
+          }),
+        }
+      );
+
+      const data = await response.json();
+      if (data.success) {
+        // Handle success, e.g., show a success message or update UI
+        // Update the department in the 'departments' array
+        handleSuccess("Department updated successfully");
+        const updatedDepartments = [...departments];
+        const updatedDepartmentIndex = updatedDepartments.findIndex(
+          (department) => department._id === selectedDepartment._id
+        );
+        if (updatedDepartmentIndex !== -1) {
+          updatedDepartments[updatedDepartmentIndex].departmentName =
+            selectedDepartment.departmentName;
+        }
+        setDepartments(updatedDepartments);
+        setSelectedDepartment({ departmentName: "" });
+        handleCloseEdit();
+      } else {
+        // Handle error, e.g., show an error message or perform necessary actions
+        handleError(data.errors.departmentName);
+        console.error("Failed to update department");
+      }
+    } catch (error) {
+      handleError(
+        "Server is unavailable at this moment. Please try again later."
+      );
+    }
+  }
+
+  const handleDeleteClick = (department) => {
+    if (window.confirm("Are you sure you want to delete this department?")) {
+      // Perform the deletion operation
+      deleteDepartment(department._id); // Implement this function
+    }
+  };
+
+  const deleteDepartment = async (departmentId) => {
+    try {
+      // Send a DELETE request to delete the department
+      const response = await fetch(
+        `${API_BASE_URL}user/user-delete-department/${departmentId}`,
+        {
+          method: "DELETE",
+          credentials: "include",
+        }
+      );
+
+      const data = await response.json();
+      if (data.success) {
+        // Handle success, e.g., show a success message or update UI
+        console.log("Department deleted successfully");
+        handleSuccess("Department deleted successfully");
+        // Remove the deleted department from the 'departments' array
+        const updatedDepartments = departments.filter(
+          (department) => department._id !== departmentId
+        );
+
+        // Update the 'departments' state with the modified array
+        setDepartments(updatedDepartments);
+      } else {
+        // Handle error, e.g., show an error message or perform necessary actions
+        handleError("Failed to delete department");
       }
     } catch (error) {
       console.error("Error:", error);
     }
-  }
+  };
 
   useEffect(() => {
     const fetchData = async () => {
-      const result = await fetch(`${API_BASE_URL}user/user-get-department`, {
-        method: "GET",
-        credentials: "include", // Include cookies in the request
-      });
-      const jsonResult = await result.json();
-      console.log(jsonResult);
-      if (jsonResult.success) {
-        setDepartments(jsonResult.departments);
+      try {
+        const result = await fetch(`${API_BASE_URL}user/user-get-department`, {
+          method: "GET",
+          credentials: "include", // Include cookies in the request
+        });
+        const data = await result.json();
+        if (data.success) {
+          setDepartments(data.departments);
+        }
+      } catch {
+        handleError(
+          "Server is unavailable at this moment. Please try again later."
+        );
       }
     };
     fetchData();
   }, []);
 
-  return authenticated ? (
+  return (
     <>
       <Row>
         <Col sm="12">
@@ -129,6 +237,7 @@ const UserDepartment = () => {
                 <h4 className="card-title mb-0">User Departments</h4>
               </div>
               <div>
+                <ToastContainer position="top-right" autoClose={3000} />
                 <Button
                   className="text-center btn-primary btn-icon me-2 mt-lg-0 mt-md-0 mt-3"
                   onClick={handleShow}
@@ -164,7 +273,6 @@ const UserDepartment = () => {
                       <Form.Label>Department name</Form.Label>
                       <Form.Control
                         type="text"
-                        value={departmentName}
                         onChange={(e) => setDepartmentName(e.target.value)}
                         placeholder="Department Name"
                       />
@@ -184,6 +292,44 @@ const UserDepartment = () => {
                     </Button>
                   </Modal.Body>
                 </Modal>
+                <Modal show={showEdit} onHide={handleCloseEdit}>
+                  <Modal.Header closeButton>
+                    <Modal.Title>Update department</Modal.Title>
+                  </Modal.Header>
+                  <Modal.Body>
+                    <Form.Group
+                      className="mb-3"
+                      controlId="formBasicPassword"
+                      onSubmit={(e) => handleSubmitUpdate(e)}
+                    >
+                      <Form.Label>Department name</Form.Label>
+                      <Form.Control
+                        type="text"
+                        placeholder="Department Name"
+                        value={selectedDepartment.departmentName}
+                        onChange={(e) =>
+                          setSelectedDepartment({
+                            ...selectedDepartment,
+                            departmentName: e.target.value, // Update the name property of selectedDepartment
+                          })
+                        }
+                      />
+                      <Form.Control.Feedback className="invalid">
+                        Example invalid feedback text
+                      </Form.Control.Feedback>
+                    </Form.Group>
+                    <Button
+                      type="submit"
+                      variant="primary"
+                      onClick={(e) => handleSubmitUpdate(e)}
+                    >
+                      Update
+                    </Button>{" "}
+                    <Button variant="danger" onClick={handleCloseEdit}>
+                      Cancel
+                    </Button>
+                  </Modal.Body>
+                </Modal>
               </div>
             </Card.Header>
             <Card.Body>
@@ -192,7 +338,7 @@ const UserDepartment = () => {
                   <thead>
                     <tr>
                       <th>Department Name</th>
-                      <th style={{ float: "right" }}>Actions</th>
+                      <th style={{ textAlign: "right" }}>Actions</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -204,8 +350,8 @@ const UserDepartment = () => {
                             <Link
                               className="btn btn-sm btn-icon text-primary flex-end"
                               data-bs-toggle="tooltip"
-                              title="Edit User"
-                              to="#"
+                              title="Edit Department"
+                              onClick={() => handleEditClick(department)}
                             >
                               <span className="btn-inner">
                                 <svg
@@ -243,11 +389,8 @@ const UserDepartment = () => {
                             <Link
                               className="btn btn-sm btn-icon text-danger "
                               data-bs-toggle="tooltip"
-                              title="Delete User"
-                              to="#"
-                              onClick={() => {
-                                permissiondeleted(index);
-                              }}
+                              title="Delete Department"
+                              onClick={() => handleDeleteClick(department)}
                             >
                               <span className="btn-inner">
                                 <svg
@@ -287,25 +430,12 @@ const UserDepartment = () => {
                     ))}
                   </tbody>
                 </table>
-                <div className="text-center">
-                  <Button
-                    onClick={() =>
-                      history.push("/dashboard/user/user-add-department")
-                    }
-                    type="button"
-                    variant="primary"
-                  >
-                    Save
-                  </Button>
-                </div>
               </div>
             </Card.Body>
           </Card>
         </Col>
       </Row>
     </>
-  ) : (
-    ""
   );
 };
 export default UserDepartment;

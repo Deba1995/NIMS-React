@@ -13,10 +13,6 @@ const {
   oemProductAdd,
   oemProductDelete,
   oemProductUpdate,
-  oemOrderList,
-  createOemOrder,
-  oemOrderUpdate,
-  oemOrderDelete,
 } = require("../../controllers/auth-controller");
 
 router.get("/api/oem/oem-get-oem", requireAuth, oemList);

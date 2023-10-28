@@ -4,18 +4,25 @@ const { handleErrors } = require("./handleError");
 
 const departmentView = async (req, res, next) => {
   const departments = await userdepartment.find({});
-  res.status(201).json({
-    departments: departments,
-    message: "Data retrieved successfully",
-    success: true,
-  });
+  if (departments.length != 0) {
+    res.status(201).json({
+      departments: departments,
+      message: "Data retrieved successfully",
+      success: true,
+    });
+  } else {
+    res.status(400).json({
+      success: false,
+      message: "Error retrieving the data or no data available",
+    });
+  }
 };
 
 const createDepartment = async (req, res, next) => {
   try {
-    
+    console.log("Hi from department");
     const { departmentName } = req.body;
-    
+    console.log(departmentName);
     const dcode = departmentName.slice(0, 3);
     const departmentCode = dcode + "001";
     //creating new department document
@@ -48,14 +55,16 @@ const editDepartment = async (req, res, next) => {
   userdepartment
     .findByIdAndUpdate(id, req.body, { runValidators: true })
     .then((result) => {
-      res
-        .status(201)
-        .json({ department: id, location: "/user/add-department" });
+      res.status(201).json({
+        department: id,
+        success: true,
+        message: "Department updated successfully",
+      });
     })
     .catch((err) => {
       console.log(err);
       const errors = handleErrors(err);
-
+      console.log(errors);
       res.status(400).json({ errors });
     });
 };
@@ -66,7 +75,7 @@ const deleteDepartment = (req, res, next) => {
     userdepartment
       .findByIdAndDelete(id)
       .then((result) => {
-        res.json({ location: "/user/add-department" });
+        res.json({ success: true, message: "Department deleted successfully" });
       })
       .catch((err) => {
         console.log(err);

@@ -1,11 +1,10 @@
 import React from "react";
 import Index from "../views/dashboard/index";
-// import { Switch, Route } from 'react-router-dom'
 // user
 import UserDepartment from "../views/dashboard/user/user-add-department";
 import UserDesignation from "../views/dashboard/user/user-add-designation";
 import UserAdd from "../views/dashboard/user/user-add-user";
-// import userProfileEdit from '../views/dashboard/app/user-privacy-setting';
+
 //client
 import ClientSector from "../views/dashboard/client/client-add-sector";
 import ClientAdd from "../views/dashboard/client/client-add-client";
@@ -21,6 +20,7 @@ import Calender from "../views/dashboard/special-pages/calender";
 
 //admin
 import Admin from "../views/dashboard/admin/admin";
+import AdminProfile from "../views/dashboard/admin/admin-profile";
 import Default from "../layouts/dashboard/default";
 import { AuthorizeUser } from "../context/AuthContext";
 
@@ -126,6 +126,14 @@ export const DefaultRouter = [
         element: (
           <AuthorizeUser>
             <Admin />
+          </AuthorizeUser>
+        ),
+      },
+      {
+        path: "dashboard/admin/adminprofile",
+        element: (
+          <AuthorizeUser>
+            <AdminProfile />
           </AuthorizeUser>
         ),
       },

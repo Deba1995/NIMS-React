@@ -1,22 +1,11 @@
 import React, { useEffect, useState, memo, Fragment } from "react";
-import { Row, Col, Image } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { Row, Col } from "react-bootstrap";
 import Card from "../../components/Card";
 import { API_BASE_URL } from "../../config/serverApiConfig";
-import { useNavigate } from "react-router-dom";
-import { ToastContainer, toast } from "react-toastify";
 
-//progressbar
-import Progress from "../../components/progress.js";
 //Count-up
 import CountUp from "react-countup";
 // img
-import avatars11 from "../../assets/images/avatars/01.png";
-import avatars22 from "../../assets/images/avatars/avtar_1.png";
-import avatars33 from "../../assets/images/avatars/avtar_2.png";
-import avatars44 from "../../assets/images/avatars/avtar_3.png";
-import avatars55 from "../../assets/images/avatars/avtar_4.png";
-import avatars66 from "../../assets/images/avatars/avtar_5.png";
 
 // AOS
 import AOS from "aos";

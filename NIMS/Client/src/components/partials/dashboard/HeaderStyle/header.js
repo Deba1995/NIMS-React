@@ -220,7 +220,10 @@ const Header = memo((props) => {
                   className="dropdown-menu-end"
                   aria-labelledby="navbarDropdown"
                 >
-                  <Dropdown.Item href="https://templates.iqonic.design/hope-ui/react/build/dashboard/app/user-profile">
+                  <Dropdown.Item
+                    href="/dashboard/admin/adminprofile"
+                    to="/dashboard/admin/adminprofile"
+                  >
                     Profile
                   </Dropdown.Item>
                   <Dropdown.Item href="https://templates.iqonic.design/hope-ui/react/build/dashboard/app/user-privacy-setting">

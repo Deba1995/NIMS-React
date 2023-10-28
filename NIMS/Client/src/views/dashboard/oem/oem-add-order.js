@@ -4,7 +4,15 @@ import Select from "react-select";
 import { MaterialReactTable } from "material-react-table";
 import Flatpickr from "react-flatpickr";
 import "flatpickr/dist/flatpickr.css";
-
+import {
+  MDBBtn,
+  MDBModal,
+  MDBModalDialog,
+  MDBModalContent,
+  MDBModalHeader,
+  MDBModalTitle,
+  MDBModalBody,
+} from "mdb-react-ui-kit";
 import { Link } from "react-router-dom";
 import Card from "../../../components/Card";
 import { API_BASE_URL } from "../../../config/serverApiConfig";
@@ -17,6 +25,8 @@ const AddOrder = () => {
              Start MODAL VARIABLES
 -----------------------------------------------------------------------*/
   const [show, setShow] = useState(false);
+  const [optSmModal, setOptSmModal] = useState(false);
+  const toggleShow = () => setOptSmModal(!optSmModal);
   const [fullscreen] = useState(true);
   const handleShow = () => setShow(true);
   const handleClose = () => setShow(false);
@@ -88,6 +98,16 @@ const AddOrder = () => {
     ],
     []
   );
+
+  const [dataTableOptions, setDataTableOptions] = useState({
+    columns: [
+      { title: "Order Id" },
+      { title: "Order Date" },
+      { title: "Challan No" },
+      { title: "Challan Date" },
+    ],
+    data: [],
+  });
   /*---------------------------------------------------------------------
             END COLUMN FOR TABLE
 -----------------------------------------------------------------------*/
@@ -288,6 +308,7 @@ const AddOrder = () => {
   /*--------------------------------------------------------------------------------
 --------------------------------Start Fetch oem Data--------------------------------
 ----------------------------------------------------------------------------------*/
+
   useEffect(() => {
     const fetchOrder = async () => {
       try {
@@ -474,7 +495,6 @@ const AddOrder = () => {
     setSelectedId(item._id);
 
     setTableDataEdit(item.details);
-    console.log(item.sectorName);
     setSelectedSectorDropdown({
       value: item.sectorName,
       label: item.sectorName,
@@ -534,7 +554,7 @@ const AddOrder = () => {
         const updatedOemOrderIndex = updatedOemOrder.findIndex(
           (item) => item._id === selectedId
         );
-        console.log(updatedOemOrderIndex);
+
         if (updatedOemOrderIndex !== -1) {
           updatedOemOrder[updatedOemOrderIndex] = {
             ...updatedOemOrder[updatedOemOrderIndex], // Copy existing oem properties
@@ -678,6 +698,23 @@ const AddOrder = () => {
 
   /*--------------------------------------------------------------------------------
 ----------------------------------------------------------------------------------*/
+  /*--------------------------------------------------------------------------------
+--------------------------------VIEW oem Data--------------------------------
+----------------------------------------------------------------------------------*/
+
+  useEffect(() => {
+    // Update dataTableOptions whenever oems changes
+    const newDataTableOptions = {
+      ...dataTableOptions,
+      data: oemOrderList.map((item) => [
+        item.orderId,
+        item.orderDate,
+        item.challanNo,
+        item.challanDate,
+      ]),
+    };
+    setDataTableOptions(newDataTableOptions);
+  }, [oemOrderList]);
   return (
     <>
       <div>
@@ -690,7 +727,10 @@ const AddOrder = () => {
                   <h4 className="card-title">Order List</h4>
                 </div>
                 <div className="d-flex justify-content-between">
-                  <Button className="text-center btn-primary btn-icon me-2 mt-lg-0 mt-md-0 mt-3">
+                  <Button
+                    className="text-center btn-primary btn-icon me-2 mt-lg-0 mt-md-0 mt-3"
+                    onClick={toggleShow}
+                  >
                     <span>View</span>
                   </Button>
                   <Button
@@ -1560,6 +1600,30 @@ const AddOrder = () => {
                 </Modal.Body>
               </Modal>
               {/*=======================END MODAL TO EDIT ORDER======================= */}
+              {/*======================= MODAL TO Views ORDER======================= */}
+              <MDBModal show={optSmModal} tabIndex="-1" setShow={setOptSmModal}>
+                <MDBModalDialog size="xl">
+                  <MDBModalContent>
+                    <MDBModalHeader>
+                      <MDBModalTitle>View Order Information</MDBModalTitle>
+                      <MDBBtn
+                        className="btn-close"
+                        color="none"
+                        onClick={toggleShow}
+                      ></MDBBtn>
+                    </MDBModalHeader>
+                    <MDBModalBody>
+                      <div className="table-responsive border-bottom my-3">
+                        <DataTable
+                          data={dataTableOptions.data}
+                          columns={dataTableOptions.columns}
+                          iscolumnfooter="bootstrap-datatable"
+                        />
+                      </div>
+                    </MDBModalBody>
+                  </MDBModalContent>
+                </MDBModalDialog>
+              </MDBModal>
               <Card.Body className="px-0">
                 <div className="table-responsive">
                   <table

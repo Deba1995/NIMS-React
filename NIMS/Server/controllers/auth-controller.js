@@ -1,13 +1,7 @@
 const { user, admin } = require("../models/user");
 const path = require("path");
 const csv = require("csvtojson");
-const {
-  oem,
-  oemProduct,
-  oemSubCategory,
-  oemCategory,
-  oemOrder,
-} = require("../models/oem");
+const { oem, oemProduct, oemCategory, oemOrder } = require("../models/oem");
 
 const { clientsector, client } = require("../models/client");
 
@@ -158,6 +152,7 @@ const login = async (req, res, next) => {
         role: userLogin.role,
         token: token,
         success: true,
+        message: "Logging you in!!",
       });
     } else {
       const token = createToken({
@@ -172,6 +167,7 @@ const login = async (req, res, next) => {
         message: "User logged in successfully",
         token: token,
         success: true,
+        message: "Logging you in!!",
       });
     }
   } catch (err) {
@@ -184,7 +180,67 @@ const login = async (req, res, next) => {
 const createRoles = async (req, res, next) => {
   res.render("admin/roles");
 };
+const adminProfile = async (req, res) => {
+  const id = req.user.uid;
+  const user = await admin.findOne({ _id: id });
+  if (user) {
+    res.status(200).json({
+      profile: user,
+      success: true,
+      message: "Profile retrieved Successfully",
+    });
+  } else {
+    res
+      .status(400)
+      .json({ success: false, message: "Error retrieving the profile" });
+  }
+};
 
+const editAdminProfile = async (req, res) => {
+  try {
+    const id = req.user.uid;
+    let flag = false;
+    const { password, confirmpassword, ...updatedData } = req.body;
+
+    if (!password == "" && !confirmpassword == "") {
+      if (password === confirmpassword) {
+        updatedData.password = password;
+        flag = true;
+      } else {
+        const error = new Error("Password mismatch. Check the password.");
+        error.code = "PASSWORD_MISMATCH_ERROR";
+        error.message = "Password do not match.";
+        throw error;
+      }
+    }
+
+    const result = await admin.findOneAndUpdate({ _id: id }, updatedData, {
+      new: true,
+      runValidators: true,
+    });
+
+    const updatedAdminData = await result.save();
+    if (flag) {
+      res.cookie("jwt", "", { maxAge: 1 });
+      res.status(200).json({ success: true, message: "Please Login again" });
+    } else {
+      if (updatedAdminData) {
+        res.status(201).json({
+          profile: id,
+          success: true,
+          message: "Profile Update Successfully",
+        });
+      } else {
+        throw new Error("User not found");
+      }
+    }
+  } catch (err) {
+    console.log(err);
+    const errors = handleErrors(err);
+    console.log(errors);
+    res.status(400).json({ errors });
+  }
+};
 //===============================================================================================================
 //================================   OEM ACTIONS  ================================================================
 //===============================================================================================================
@@ -406,4 +462,6 @@ module.exports = {
   createOemOrder,
   oemOrderUpdate,
   oemOrderDelete,
+  adminProfile,
+  editAdminProfile,
 };

@@ -16,6 +16,8 @@ const {
   createOemOrder,
   oemOrderUpdate,
   oemOrderDelete,
+  adminProfile,
+  editAdminProfile,
 } = require("../controllers/auth-controller");
 const router = express.Router();
 
@@ -28,6 +30,9 @@ router.post("/auth/sign-in", login);
 router.post("/auth/sign-up", creatingAdmin);
 
 router.get("/roles", requireAuth, createRoles);
+
+router.get("/api/admin/admin-get-profile", requireAuth, adminProfile);
+router.put("/api/admin/admin-update-profile", requireAuth, editAdminProfile);
 /*---------------------------------------------------------------------
              Start Oem Module Routes
 -----------------------------------------------------------------------*/
